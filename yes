@@ -10,6 +10,10 @@ git commit -m "Initial commit"
 
 # 4. Link to your GitHub repository
 git remote add origin https://github.com/yourusername/my-new-repo.git
+git add Procfile
+git commit -m "Add Procfile to specify how to run the app"
+
 
 # 5. Push the changes to GitHub
 git push -u origin main
+
