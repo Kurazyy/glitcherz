@@ -6,6 +6,11 @@ git add otp/requirements.txt
 git add app.py
 git add Procfile
 git commit -m "Add Procfile to specify how to run the app
+git status  # to check if app.py and Procfile are added
+git add app.py Procfile  # if they aren't added
+git commit -m "Add app.py and Procfile"
+git push origin main  # push to GitHub
+
 
 
 # 3. Commit your changes
