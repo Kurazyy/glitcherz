@@ -1,1 +1,1 @@
-web: python /workspaces/glitcherz/app.py
+web: python glitcherz/app.py
