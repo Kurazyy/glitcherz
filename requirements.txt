@@ -2,3 +2,4 @@ Flask==2.3.3
 python-telegram-bot==20.3
 gunicorn==21.2.0
 telnyx==2.1.4
+twilio==6.70.0  # Use the latest version or the specific version you're using
