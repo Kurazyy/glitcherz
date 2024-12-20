@@ -10,4 +10,5 @@ def telnyx_webhook():
     return 'OK', 200  # Respond with a 200 status to acknowledge the webhook
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = os.getenv('PORT', 10000)  # Get the port from the environment or default to 10000
+    app.run(host='0.0.0.0', port=port)  # Bind to all IPs and the correct port
