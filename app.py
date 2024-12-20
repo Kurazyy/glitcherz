@@ -2,8 +2,8 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-@app.route('/telnyx_webhook', methods=['POST'])
-def telnyx_webhook():
+@app.route('webhook', methods=['POST'])
+def webhook():
     data = request.json
     telegram_user_id = data.get('telegram_user_id')
     otp_code = data.get('otp_code')
