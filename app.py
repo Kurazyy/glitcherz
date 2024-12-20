@@ -4,11 +4,14 @@ app = Flask(__name__)
 
 @app.route('/telnyx_webhook', methods=['POST'])
 def telnyx_webhook():
-    # Process the incoming webhook data
     data = request.json
-    print(data)
-    return 'OK', 200  # Respond with a 200 status to acknowledge the webhook
+    telegram_user_id = data.get('telegram_user_id')
+    otp_code = data.get('otp_code')
+
+    # Process the data, e.g., send a message to the Telegram user or log the call status
+    print(f"Received webhook for user {telegram_user_id} with OTP: {otp_code}")
+    
+    return 'OK', 200  # Respond with a 200 OK status
 
 if __name__ == '__main__':
-    port = os.getenv('PORT', 10000)  # Get the port from the environment or default to 10000
-    app.run(host='0.0.0.0', port=port)  # Bind to all IPs and the correct port
+    app.run(debug=True)
