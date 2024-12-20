@@ -12,7 +12,7 @@ def telnyx_webhook():
     data = request.json  # Capture the incoming data
     print(f"Received webhook: {data}")
 
-    # Extract the digit pressed by the victim
+    # Extract the digit pressed by the victim and the Telegram user ID from the query parameters
     digit = data.get('digit', None)
     telegram_user_id = data.get('telegram_user_id', None)
 
