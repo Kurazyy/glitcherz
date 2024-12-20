@@ -2,8 +2,8 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route("/telnyx_webhook", methods=["POST"])
-def telnyx_webhook():
+@app.route("/webhook", methods=["POST"])
+def webhook():
     data = request.json
     print("Received Webhook:", data)
     return jsonify({"status": "received"}), 200
