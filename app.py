@@ -1,13 +1,13 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 
 app = Flask(__name__)
 
-@app.route("/webhook", methods=["POST"])
-def webhook():
+@app.route('/telnyx_webhook', methods=['POST'])
+def telnyx_webhook():
+    # Process the incoming webhook data
     data = request.json
-    print("Received Webhook:", data)
-    return jsonify({"status": "received"}), 200
+    print(data)
+    return 'OK', 200  # Respond with a 200 status to acknowledge the webhook
 
-if __name__ == "__main__":
-    # For production deployment, use this instead of app.run
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == '__main__':
+    app.run(debug=True)
